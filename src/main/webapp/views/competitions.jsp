@@ -4,29 +4,29 @@
 
 <html>
     <head>
-        <title>Games</title>
+        <title>Competitions</title>
         <style>
             <%@include file="../styles/style.css" %>
             <%@include file="../bootstrap-4.6.0-dist/css/bootstrap.min.css" %>
         </style>
     </head>
     <body>
-        <h1 class="event-title">Games</h1>
+        <h1 class="event-title">Competitions</h1>
         <table class="table table-hover">
             <thead>
-            <tr>
-                <th>Title</th>
-                <th>Palace</th>
-                <th>Date</th>
-            </tr>
+                <tr>
+                    <th>Title</th>
+                    <th>Palace</th>
+                    <th>Date</th>
+                </tr>
             </thead>
             <tbody>
                 <%--@elvariable id="data" type="java.util.List"--%>
-                <c:forEach items="${data}" var="game"><%--@elvariable id="var" type="Game"--%>
+                <c:forEach items="${data}" var="comp"><%--@elvariable id="var" type="models.sportEvents.Competition"--%>
                     <tr>
-                        <td>${game.title}</td>
-                        <td>${game.place}</td>
-                        <td>${game.date}</td>
+                        <td>${comp.title}</td>
+                        <td>${comp.place}</td>
+                        <td>${comp.date}</td>
                     </tr>
                 </c:forEach>
             </tbody>

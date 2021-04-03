@@ -1,6 +1,7 @@
 package servlets;
 
-import models.sportEvents.Game;
+import models.sportEvents.Competition;
+import models.sportEvents.Match;
 import service.ServiceLayer;
 
 import javax.servlet.ServletException;
@@ -10,14 +11,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet("/games")
-public class GamesServlet extends HttpServlet {
-    private final ServiceLayer<Game> serviceLayer = new ServiceLayer<>(Game.class);
+@WebServlet("/matches")
+public class MatchesServlet extends HttpServlet {
+    private final ServiceLayer<Match> serviceLayer = new ServiceLayer<>(Match.class);
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         var data = serviceLayer.read();
         req.setAttribute("data", data);
-        req.getRequestDispatcher("views/games.jsp").forward(req, resp);
+        req.getRequestDispatcher("views/matches.jsp").forward(req, resp);
     }
 }
