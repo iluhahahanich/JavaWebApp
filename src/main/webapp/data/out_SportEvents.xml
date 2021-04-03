@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<data>
+    <elem xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="sportEvent">
+        <title>Barsa-Real</title>
+        <place>Madrid</place>
+        <date>2021-01-23</date>
+        <attendance>
+            <children>12</children>
+            <adults>24</adults>
+            <elderly>2</elderly>
+        </attendance>
+    </elem>
+    <elem xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="sportEvent">
+        <title>OlympicGames</title>
+        <place>Minsk</place>
+        <date>2021-01-20</date>
+        <attendance>
+            <children>1200</children>
+            <adults>2400</adults>
+            <elderly>200</elderly>
+        </attendance>
+    </elem>
+    <elem xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="sportEvent">
+        <title>CS:GO</title>
+        <place>Moscow</place>
+        <date>2021-01-21</date>
+        <attendance>
+            <children>120</children>
+            <adults>240</adults>
+            <elderly>20</elderly>
+        </attendance>
+    </elem>
+</data>
