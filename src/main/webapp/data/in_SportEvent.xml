@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <data xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <elem xsi:type="sportEvent">
+        <id>1</id>
         <title>Barsa-Real</title>
         <date>2021-01-23</date>
         <place>Madrid</place>
@@ -11,6 +12,7 @@
         </attendance>
     </elem>
     <elem xsi:type="sportEvent">
+        <id>2</id>
         <title>OlympicGames</title>
         <date>2021-01-20</date>
         <place>Minsk</place>
@@ -21,6 +23,7 @@
         </attendance>
     </elem>
     <elem xsi:type="sportEvent">
+        <id>3</id>
         <title>CS:GO</title>
         <date>2021-01-21</date>
         <place>Moscow</place>

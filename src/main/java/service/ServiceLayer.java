@@ -1,28 +1,30 @@
 package service;
 
-import clients.CsvDao;
-import clients.Dao;
-import clients.JsonDao;
-import clients.XmlDao;
+import dao.CsvDao;
+import dao.Dao;
+import dao.JsonDao;
+import dao.XmlDao;
+import exceptions.ServiceLayerException;
 import handlers.LoggingProxyHandler;
-import handlers.SportEventsHandler;
-import models.exceptions.ReadWriteException;
-import models.sportEvents.SportEvent;
+import exceptions.ReadWriteException;
+import models.AgeGroup;
+import models.SportEvent;
 
 import java.io.File;
 import java.lang.reflect.Proxy;
+import java.time.DayOfWeek;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
-
-// TODO: thread safety
-// TODO: ID
 
 public class ServiceLayer<T> {
 
     public static final String daoType = "csv";
     public static final String appDir = "../webapps/UPweb/";
 
-    private static SportEventsHandler handler = new SportEventsHandler();
     private Dao<T> readDao, writeDao;
 
     public ServiceLayer(Class<T> clazz) {
@@ -34,38 +36,34 @@ public class ServiceLayer<T> {
             try {
                 return readDao.read();
             } catch (ReadWriteException e) {
-                System.out.println(e.getMessage());
-                e.printStackTrace();
+                throw new ServiceLayerException(e);
             }
         }
-        return null;
     }
 
-    public List<T> write(List<T> data) {
+    public void write(List<T> data) {
         synchronized (Dao.class) {
             try {
                 writeDao.write(data);
             } catch (ReadWriteException e) {
-                System.out.println(e.getMessage());
-                e.printStackTrace();
+                throw new ServiceLayerException(e);
             }
         }
-        return null;
     }
 
     private void initDao(Class<T> clazz){
         switch (daoType) {
             case "xml" -> {
-                readDao = new XmlDao<T>(appDir + "data/in_" + clazz.getSimpleName() + "s.xml", clazz);
-                writeDao = new XmlDao<T>(appDir + "data/out_" + clazz.getSimpleName() + "s.xml", clazz);
+                readDao = new XmlDao<T>(appDir + "data/in_" + clazz.getSimpleName() + ".xml", clazz);
+                writeDao = new XmlDao<T>(appDir + "data/in_" + clazz.getSimpleName() + ".xml", clazz);
             }
             case "json" -> {
-                readDao = new JsonDao<T>(appDir + "data/in_" + clazz.getSimpleName() + "s.json", clazz);
-                writeDao = new JsonDao<T>(appDir + "data/out_" + clazz.getSimpleName() + "s.json", clazz);
+                readDao = new JsonDao<T>(appDir + "data/in_" + clazz.getSimpleName() + ".json", clazz);
+                writeDao = new JsonDao<T>(appDir + "data/in_" + clazz.getSimpleName() + ".json", clazz);
             }
             case "csv" -> {
-                readDao = new CsvDao<T>(appDir + "data/in_" + clazz.getSimpleName() + "s.csv", clazz);
-                writeDao = new CsvDao<T>(appDir + "data/out_" + clazz.getSimpleName() + "s.csv", clazz);
+                readDao = new CsvDao<T>(appDir + "data/in_" + clazz.getSimpleName() + ".csv", clazz);
+                writeDao = new CsvDao<T>(appDir + "data/in_" + clazz.getSimpleName() + ".csv", clazz);
             }
         }
 
@@ -78,6 +76,20 @@ public class ServiceLayer<T> {
                 LoggingProxyHandler.class.getClassLoader(),
                 new Class[]{Dao.class},
                 new LoggingProxyHandler<>(dao, new File(appDir + "log.txt")));
+    }
+
+    public List<?> getSortedByAgeGroupAttendance(List<? extends SportEvent> events, AgeGroup group){
+        return events.stream()
+                .sorted(Comparator.comparingInt(e -> e.getAttendance().getAttendanceByAgeGroup(group)))
+                .collect(Collectors.toList());
+    }
+
+    public int getAverageByDayOfWeek(List<? extends SportEvent> events, DayOfWeek dayOfWeek){
+        var attendance = events.stream()
+                .filter(e -> dayOfWeek.equals(DayOfWeek.of(e.getDate().toGregorianCalendar().get(Calendar.DAY_OF_WEEK))))
+                .mapToInt(e -> e.getAttendance().getTotalAttendance())
+                .toArray();
+        return attendance.length != 0 ? Arrays.stream(attendance).sum() / attendance.length : 0;
     }
 
 }

@@ -12,12 +12,16 @@
     </head>
     <body>
         <h1 class="event-title">Games</h1>
-        <table class="table table-hover">
+        <table class="table table-hover table-bordered">
             <thead>
             <tr>
                 <th>Title</th>
                 <th>Palace</th>
                 <th>Date</th>
+                <th>Children</th>
+                <th>Adults</th>
+                <th>Elderly</th>
+                <th>Score</th>
             </tr>
             </thead>
             <tbody>
@@ -27,14 +31,14 @@
                         <td>${game.title}</td>
                         <td>${game.place}</td>
                         <td>${game.date}</td>
+                        <td>${game.attendance.children}</td>
+                        <td>${game.attendance.adults}</td>
+                        <td>${game.attendance.elderly}</td>
+                        <td>${game.score}</td>
                     </tr>
                 </c:forEach>
             </tbody>
         </table>
 
-    <%--    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>--%>
-    <%--    <script>--%>
-    <%--        <%@include file="../bootstrap-4.6.0-dist/js/bootstrap.min.js" %>--%>
-    <%--    </script>--%>
     </body>
 </html>

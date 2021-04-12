@@ -12,29 +12,49 @@
     </head>
     <body>
         <h1 class="event-title">Competitions</h1>
-        <table class="table table-hover">
+        <table class="table table-hover table-bordered">
             <thead>
                 <tr>
+                    <th>Options</th>
                     <th>Title</th>
                     <th>Palace</th>
                     <th>Date</th>
+                    <th>Children</th>
+                    <th>Adults</th>
+                    <th>Elderly</th>
+                    <th>Gold</th>
+                    <th>Silver</th>
+                    <th>Bronze</th>
                 </tr>
             </thead>
             <tbody>
-                <%--@elvariable id="data" type="java.util.List"--%>
-                <c:forEach items="${data}" var="comp"><%--@elvariable id="var" type="models.sportEvents.Competition"--%>
+                <jsp:useBean id="data" scope="request" type="java.util.List"/>
+                <c:forEach items="${data}" var="comp">
                     <tr>
+                        <td>
+                            <form method="post" action="competitions_changing">
+                                <button class="btn btn-primary" type="submit" name="changeId" value="${comp.id}">change</button>
+                            </form>
+                            <form method="post">
+                                <button class="btn btn-primary" type="submit" name="deleteId" value="${comp.id}">delete</button>
+                            </form>
+                        </td>
                         <td>${comp.title}</td>
                         <td>${comp.place}</td>
                         <td>${comp.date}</td>
+                        <td>${comp.attendance.children}</td>
+                        <td>${comp.attendance.adults}</td>
+                        <td>${comp.attendance.elderly}</td>
+                        <td>${comp.pedestal.gold}</td>
+                        <td>${comp.pedestal.silver}</td>
+                        <td>${comp.pedestal.bronze}</td>
                     </tr>
+
                 </c:forEach>
             </tbody>
         </table>
-
-    <%--    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>--%>
-    <%--    <script>--%>
-    <%--        <%@include file="../bootstrap-4.6.0-dist/js/bootstrap.min.js" %>--%>
-    <%--    </script>--%>
+        <form method="post" action="competitions_changing">
+            <button class="new-btn btn btn-primary" type="submit" name="new" value="1">new</button>
+        </form>
     </body>
 </html>

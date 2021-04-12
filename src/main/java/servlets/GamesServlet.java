@@ -1,6 +1,6 @@
 package servlets;
 
-import models.sportEvents.Game;
+import models.Game;
 import service.ServiceLayer;
 
 import javax.servlet.ServletException;

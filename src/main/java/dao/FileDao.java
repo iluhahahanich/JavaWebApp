@@ -1,4 +1,4 @@
-package clients;
+package dao;
 
 public abstract class FileDao<T> implements Dao<T> {
     protected String filename = null;

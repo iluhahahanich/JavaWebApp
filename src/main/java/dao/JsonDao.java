@@ -1,7 +1,7 @@
-package clients;
+package dao;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import models.exceptions.ReadWriteException;
+import exceptions.ReadWriteException;
 
 import java.io.File;
 import java.io.IOException;

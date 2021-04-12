@@ -1,11 +1,7 @@
 [
   {
+    "id": 1,
     "title": "WorldBestProgrammer2021",
-    "pedestal": {
-      "gold": "turist",
-      "silver": "iluha",
-      "bronze": "lyoha"
-    },
     "date": "2021-01-23",
     "place": "Minsk",
     "attendance": {
@@ -15,12 +11,8 @@
     }
   },
   {
+    "id": 2,
     "title": "WorldCup2018",
-    "pedestal": {
-      "gold": "France",
-      "silver": "Croatia",
-      "bronze": "Belgium"
-    },
     "date": "2018-07-01",
     "place": "Russia",
     "attendance": {
@@ -30,12 +22,8 @@
     }
   },
   {
+    "id": 3,
     "title": "OlympicGames: Biathlon",
-    "pedestal": {
-      "gold": "Domracheva",
-      "silver": "Skardino",
-      "bronze": "Random Swedish Person"
-    },
     "date": "2018-10-01",
     "place": "Korea",
     "attendance": {

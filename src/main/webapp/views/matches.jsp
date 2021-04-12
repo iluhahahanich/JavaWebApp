@@ -12,21 +12,29 @@
     </head>
     <body>
         <h1 class="event-title">Matches</h1>
-        <table class="table table-hover">
+        <table class="table table-hover table-bordered">
             <thead>
             <tr>
                 <th>Title</th>
                 <th>Palace</th>
                 <th>Date</th>
+                <th>Children</th>
+                <th>Adults</th>
+                <th>Elderly</th>
+                <th>Winner</th>
             </tr>
             </thead>
             <tbody>
                 <%--@elvariable id="data" type="java.util.List"--%>
-                <c:forEach items="${data}" var="match"><%--@elvariable id="var" type="models.sportEvents.Match"--%>
+                <c:forEach items="${data}" var="match"><%--@elvariable id="var" type="models.Match"--%>
                     <tr>
                         <td>${match.title}</td>
                         <td>${match.place}</td>
                         <td>${match.date}</td>
+                        <td>${match.attendance.children}</td>
+                        <td>${match.attendance.adults}</td>
+                        <td>${match.attendance.elderly}</td>
+                        <td>${match.winner}</td>
                     </tr>
                 </c:forEach>
             </tbody>
