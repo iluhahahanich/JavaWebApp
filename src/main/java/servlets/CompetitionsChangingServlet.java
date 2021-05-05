@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
 import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
@@ -59,7 +60,14 @@ public class CompetitionsChangingServlet extends HttpServlet {
                     case "place" -> curCompetition.setPlace(req.getParameter(param));
                     case "date" -> {
                         try {
-                            curCompetition.setDate(DatatypeFactory.newInstance().newXMLGregorianCalendar(req.getParameter(param)));
+                            var paramStr= req.getParameter(param);
+                            XMLGregorianCalendar date;
+                            if (paramStr.isBlank()){
+                                date = DatatypeFactory.newInstance().newXMLGregorianCalendar();
+                            } else {
+                                date = DatatypeFactory.newInstance().newXMLGregorianCalendar(paramStr);
+                            }
+                            curCompetition.setDate(date);
                         } catch (DatatypeConfigurationException e) {
                             e.printStackTrace();
                         }

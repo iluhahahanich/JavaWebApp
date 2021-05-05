@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
+// TODO: fix Date displaying in in JSON
+
 @WebServlet("/competitions")
 public class CompetitionsServlet extends HttpServlet {
     private final ServiceLayer<Competition> serviceLayer = new ServiceLayer<>(Competition.class);
