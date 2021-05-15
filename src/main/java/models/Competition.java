@@ -1,4 +1,4 @@
-package models.sportEvents;
+package models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -11,16 +11,17 @@ import javax.xml.datatype.XMLGregorianCalendar;
 @XmlRootElement
 public class Competition extends SportEvent {
 
-    Pedestal pedestal;
+    Pedestal pedestal = new Pedestal();
 
     public Competition() { }
 
-    public Competition(@JsonProperty(value = "title") String title,
+    public Competition(@JsonProperty(value = "id") String id,
+                       @JsonProperty(value = "title") String title,
                        @JsonProperty(value = "pedestal") Pedestal pedestal,
                        @JsonProperty(value = "date") XMLGregorianCalendar date,
                        @JsonProperty(value = "place") String place,
                        @JsonProperty(value = "attendance") Attendance attendance) {
-        super(title,  date, place, attendance);
+        super(id, title,  date, place, attendance);
         this.pedestal = pedestal;
     }
 
@@ -33,8 +34,12 @@ public class Competition extends SportEvent {
         return pedestal;
     }
 
+    public void setPedestal(Pedestal pedestal) {
+        this.pedestal = pedestal;
+    }
+
     public static class Pedestal {
-        private String gold, silver, bronze;
+        private String gold = "", silver = "", bronze = "";
 
         public Pedestal() {}
 
@@ -61,6 +66,18 @@ public class Competition extends SportEvent {
 
         public String getBronze() {
             return bronze;
+        }
+
+        public void setGold(String gold) {
+            this.gold = gold;
+        }
+
+        public void setSilver(String silver) {
+            this.silver = silver;
+        }
+
+        public void setBronze(String bronze) {
+            this.bronze = bronze;
         }
     }
 }

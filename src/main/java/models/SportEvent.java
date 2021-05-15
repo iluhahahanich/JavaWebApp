@@ -1,6 +1,6 @@
-package models.sportEvents;
+package models;
 
-import clients.CsvDao;
+import dao.CsvDao;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -9,27 +9,41 @@ import models.AgeGroup;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement
 public class SportEvent {
+    private String id = "";
 
-    private String title;
+    private String title = "";
     
-    @CsvDao.Checkable(patten = "^([A-Z][a-z]*[-\\s]*)+$")
-    private String place;
+    @CsvDao.Checkable(patten = "^([A-Z][a-z]*[-\\s]*)*$")
+    private String place = "";
 
     @JsonFormat(pattern = "yyyy-MM-dd")
     private XMLGregorianCalendar date;
-    private Attendance attendance;
+
+    {
+        try {
+            date = DatatypeFactory.newInstance().newXMLGregorianCalendar("2000-01-01");
+        } catch (DatatypeConfigurationException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private Attendance attendance = new Attendance();
 
     public SportEvent(){}
 
-    public SportEvent(@JsonProperty(value = "title") String title,
+    public SportEvent(@JsonProperty(value = "id") String id,
+                      @JsonProperty(value = "title") String title,
                       @JsonProperty(value = "date") XMLGregorianCalendar date,
                       @JsonProperty(value = "place") String place,
                       @JsonProperty(value = "attendance") Attendance attendance) {
+        this.id = id;
         this.title = title;
         this.date = date;
         this.place = place;
@@ -44,6 +58,10 @@ public class SportEvent {
                 "-" + date.getYear() +
                 " " + place +
                 " " + attendance;
+    }
+
+    public String getId() {
+        return id;
     }
 
     public String getTitle() {
@@ -62,11 +80,31 @@ public class SportEvent {
         return attendance;
     }
 
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setPlace(String place) {
+        this.place = place;
+    }
+
+    public void setDate(XMLGregorianCalendar date) {
+        this.date = date;
+    }
+
+    public void setAttendance(Attendance attendance) {
+        this.attendance = attendance;
+    }
+
     @XmlAccessorType(XmlAccessType.FIELD)
     @XmlRootElement(name = "Attendance")
     public static class Attendance {
 
-        private int children, adults, elderly;
+        private int children = 0, adults = 0, elderly = 0;
 
         public Attendance(){}
 
@@ -110,5 +148,18 @@ public class SportEvent {
         public int getElderly() {
             return elderly;
         }
+
+        public void setChildren(int children) {
+            this.children = children;
+        }
+
+        public void setAdults(int adults) {
+            this.adults = adults;
+        }
+
+        public void setElderly(int elderly) {
+            this.elderly = elderly;
+        }
     }
+
 }

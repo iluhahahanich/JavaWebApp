@@ -4,14 +4,14 @@
 
 <html>
     <head>
-        <title>Games</title>
+        <title>Matches</title>
         <style>
             <%@include file="../styles/style.css" %>
             <%@include file="../bootstrap-4.6.0-dist/css/bootstrap.min.css" %>
         </style>
     </head>
     <body>
-        <h1 class="event-title">Games</h1>
+        <h1 class="event-title">Matches</h1>
         <table class="table table-hover table-bordered">
             <thead>
             <tr>
@@ -21,24 +21,28 @@
                 <th>Children</th>
                 <th>Adults</th>
                 <th>Elderly</th>
-                <th>Score</th>
+                <th>Winner</th>
             </tr>
             </thead>
             <tbody>
                 <%--@elvariable id="data" type="java.util.List"--%>
-                <c:forEach items="${data}" var="game"><%--@elvariable id="var" type="Game"--%>
+                <c:forEach items="${data}" var="match"><%--@elvariable id="var" type="models.Match"--%>
                     <tr>
-                        <td>${game.title}</td>
-                        <td>${game.place}</td>
-                        <td>${game.date}</td>
-                        <td>${game.attendance.children}</td>
-                        <td>${game.attendance.adults}</td>
-                        <td>${game.attendance.elderly}</td>
-                        <td>${game.score}</td>
+                        <td>${match.title}</td>
+                        <td>${match.place}</td>
+                        <td>${match.date}</td>
+                        <td>${match.attendance.children}</td>
+                        <td>${match.attendance.adults}</td>
+                        <td>${match.attendance.elderly}</td>
+                        <td>${match.winner}</td>
                     </tr>
                 </c:forEach>
             </tbody>
         </table>
 
+    <%--    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>--%>
+    <%--    <script>--%>
+    <%--        <%@include file="../bootstrap-4.6.0-dist/js/bootstrap.min.js" %>--%>
+    <%--    </script>--%>
     </body>
 </html>

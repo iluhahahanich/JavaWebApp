@@ -1,6 +1,6 @@
-package clients;
+package dao;
 
-import models.exceptions.ReadWriteException;
+import exceptions.ReadWriteException;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
