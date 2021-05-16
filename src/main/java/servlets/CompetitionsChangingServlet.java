@@ -1,7 +1,7 @@
 package servlets;
 
 import models.Competition;
-import service.ServiceLayer;
+import app.ServiceLayer;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

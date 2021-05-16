@@ -4,7 +4,7 @@ import dao.CsvDao;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import models.AgeGroup;
+import app.Identifiable;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -12,10 +12,11 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
+import java.util.UUID;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement
-public class SportEvent {
+public class SportEvent implements Identifiable<String> {
     private String id = "";
 
     private String title = "";
@@ -102,9 +103,12 @@ public class SportEvent {
 
     @XmlAccessorType(XmlAccessType.FIELD)
     @XmlRootElement(name = "Attendance")
-    public static class Attendance {
+    public static class Attendance implements Identifiable<String>{
 
         private int children = 0, adults = 0, elderly = 0;
+
+        @CsvDao.Skip
+        private String id = UUID.randomUUID().toString();
 
         public Attendance(){}
 
@@ -125,6 +129,16 @@ public class SportEvent {
                 case ADULT -> adults;
                 case OLD -> elderly;
             };
+        }
+
+        @Override
+        public String getId() {
+            return id;
+        }
+
+        @Override
+        public void setId(String id) {
+            this.id = id;
         }
 
         @Override

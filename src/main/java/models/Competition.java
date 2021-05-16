@@ -1,11 +1,14 @@
 package models;
 
+import app.Identifiable;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import dao.CsvDao;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.datatype.XMLGregorianCalendar;
+import java.util.UUID;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement
@@ -38,8 +41,11 @@ public class Competition extends SportEvent {
         this.pedestal = pedestal;
     }
 
-    public static class Pedestal {
+    public static class Pedestal implements Identifiable<String> {
         private String gold = "", silver = "", bronze = "";
+
+        @CsvDao.Skip
+        private String id = UUID.randomUUID().toString();
 
         public Pedestal() {}
 
@@ -49,6 +55,16 @@ public class Competition extends SportEvent {
             this.gold = gold;
             this.silver = silver;
             this.bronze = bronze;
+        }
+
+        @Override
+        public String getId() {
+            return id;
+        }
+
+        @Override
+        public void setId(String id) {
+            this.id = id;
         }
 
         @Override

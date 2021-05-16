@@ -1,11 +1,11 @@
-package service;
+package app;
 
 import dao.CsvDao;
 import dao.Dao;
 import dao.JsonDao;
 import dao.XmlDao;
 import exceptions.ServiceLayerException;
-import handlers.LoggingProxyHandler;
+import app.LoggingProxyHandler;
 import exceptions.ReadWriteException;
 import models.AgeGroup;
 import models.SportEvent;
@@ -19,10 +19,9 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-
 public class ServiceLayer<T> {
 
-    public static final String daoType = "csv";
+    public static final String daoType = "json";
     public static final String appDir = "../webapps/UPweb/";
 
     private Dao<T> readDao, writeDao;
@@ -91,5 +90,4 @@ public class ServiceLayer<T> {
                 .toArray();
         return attendance.length != 0 ? Arrays.stream(attendance).sum() / attendance.length : 0;
     }
-
 }

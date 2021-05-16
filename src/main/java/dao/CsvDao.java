@@ -29,6 +29,11 @@ public class CsvDao<T> extends FileDao<T> {
         String patten();
     }
 
+    @Target(value= ElementType.FIELD)
+    @Retention(value= RetentionPolicy.RUNTIME)
+    public @interface Skip {
+    }
+
     private List<Class<?>> supClasses;
 
     public CsvDao() { }
@@ -70,6 +75,9 @@ public class CsvDao<T> extends FileDao<T> {
     private void createClass(StringTokenizer line, Object instance, Class<?> clss) throws IllegalAccessException, DatatypeConfigurationException, NoSuchMethodException, InvocationTargetException, InstantiationException, ReadWriteException {
         for (var field : clss.getDeclaredFields()) {
             field.setAccessible(true);
+            if (field.isAnnotationPresent(Skip.class)) {
+                continue;
+            }
             var type = field.getType();
             if (type.equals(boolean.class) || type.equals(Boolean.class)) {
                 field.setBoolean(instance, Boolean.parseBoolean(line.nextToken().strip()));
@@ -118,6 +126,9 @@ public class CsvDao<T> extends FileDao<T> {
     private void printFields(FileWriter out, Object instance, Class<?> clss) throws IllegalAccessException, IOException {
         for (var field : clss.getDeclaredFields()) {
             field.setAccessible(true);
+            if (field.isAnnotationPresent(Skip.class)) {
+                continue;
+            }
             var type = field.getType();
             if (type.equals(boolean.class) || type.equals(Boolean.class) ||
                     type.equals(int.class) || type.equals(Integer.class) ||
