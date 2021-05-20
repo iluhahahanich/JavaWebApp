@@ -1,10 +1,9 @@
 package dao;
 
+import app.Identifiable;
 import exceptions.ReadWriteException;
 
 import javax.xml.datatype.DatatypeConfigurationException;
-import javax.xml.datatype.DatatypeFactory;
-import javax.xml.datatype.XMLGregorianCalendar;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -14,6 +13,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.lang.reflect.InvocationTargetException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 
@@ -22,7 +23,7 @@ import java.util.*;
  * 2) cyclic dependencies should not exist
  * @param <T> class to be read or write
  */
-public class CsvDao<T> extends FileDao<T> {
+public class CsvDao<T extends Identifiable<K>, K> extends FileDao<T, K> {
     @Target(value= ElementType.FIELD)
     @Retention(value= RetentionPolicy.RUNTIME)
     public @interface Checkable {
@@ -66,13 +67,13 @@ public class CsvDao<T> extends FileDao<T> {
                 }
                 data.add(inst);
             }
-        } catch (IllegalAccessException | NoSuchMethodException | InstantiationException | InvocationTargetException | DatatypeConfigurationException | FileNotFoundException e) {
+        } catch (IllegalAccessException | NoSuchMethodException | InstantiationException | InvocationTargetException | DatatypeConfigurationException | FileNotFoundException | ParseException e) {
             throw new ReadWriteException(e);
         }
         return data;
     }
 
-    private void createClass(StringTokenizer line, Object instance, Class<?> clss) throws IllegalAccessException, DatatypeConfigurationException, NoSuchMethodException, InvocationTargetException, InstantiationException, ReadWriteException {
+    private void createClass(StringTokenizer line, Object instance, Class<?> clss) throws IllegalAccessException, DatatypeConfigurationException, NoSuchMethodException, InvocationTargetException, InstantiationException, ReadWriteException, ParseException {
         for (var field : clss.getDeclaredFields()) {
             field.setAccessible(true);
             if (field.isAnnotationPresent(Skip.class)) {
@@ -95,8 +96,8 @@ public class CsvDao<T> extends FileDao<T> {
                 }
                 field.set(instance, value);
             }
-            else if (type.equals(XMLGregorianCalendar.class)) {
-                field.set(instance, DatatypeFactory.newInstance().newXMLGregorianCalendar(line.nextToken().strip()));
+            else if (type.equals(Date.class)) {
+                field.set(instance, new SimpleDateFormat("yyyy-MM-dd").parse(line.nextToken().strip()));
             }
             else {
                 var fieldInstance = type.getConstructor().newInstance();
@@ -135,11 +136,9 @@ public class CsvDao<T> extends FileDao<T> {
                     type.equals(String.class)) {
                 out.write(field.get(instance) + ", ");
             }
-            else if (type.equals(XMLGregorianCalendar.class)) {
-                var date = ((XMLGregorianCalendar) field.get(instance));
-                out.write(date.getYear() + "-" +
-                        (date.getMonth() < 10 ? "0" : "") + date.getMonth() + "-" +
-                        (date.getDay() < 10 ? "0" : "") + date.getDay() + ", ");
+            else if (type.equals(Date.class)) {
+                var date = (Date)field.get(instance);
+                out.write(new SimpleDateFormat("yyyy-MM-dd").format(date) + ", ");
             }
             else {
                 printFields(out, field.get(instance), type);

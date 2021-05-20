@@ -8,6 +8,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.datatype.XMLGregorianCalendar;
+import java.util.Date;
 import java.util.UUID;
 
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -20,7 +21,7 @@ public class Game extends SportEvent {
     public Game(@JsonProperty(value = "id") String id,
                 @JsonProperty(value = "title") String title,
                 @JsonProperty(value = "score") Score score,
-                @JsonProperty(value = "date") XMLGregorianCalendar date,
+                @JsonProperty(value = "date") Date date,
                 @JsonProperty(value = "place") String place,
                 @JsonProperty(value = "attendance") Attendance attendance) {
         super(id, title, date, place, attendance);

@@ -30,7 +30,7 @@
                     <tr>
                         <td>${match.title}</td>
                         <td>${match.place}</td>
-                        <td>${match.date}</td>
+                        <td>${match.dateString}</td>
                         <td>${match.attendance.children}</td>
                         <td>${match.attendance.adults}</td>
                         <td>${match.attendance.elderly}</td>

@@ -69,10 +69,10 @@
                         <c:choose>
                             <%--@elvariable id="changing" type="java.lang.Integer"--%>
                             <c:when test="${changing == comp.id}">
-                                <input type="date" name="date" value="${comp.date}">
+                                <input type="date" name="date" value="${comp.dateString}">
                             </c:when>
                             <c:otherwise>
-                                ${comp.date}
+                                ${comp.dateString}
                             </c:otherwise>
                         </c:choose>
                     </td>

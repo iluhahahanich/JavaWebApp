@@ -16,7 +16,7 @@ public class MatchesServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        var data = serviceLayer.read();
+        var data = serviceLayer.readAll();
         req.setAttribute("data", data);
         req.getRequestDispatcher("views/matches.jsp").forward(req, resp);
     }

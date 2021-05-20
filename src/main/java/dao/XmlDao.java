@@ -1,5 +1,6 @@
 package dao;
 
+import app.Identifiable;
 import exceptions.ReadWriteException;
 
 import javax.xml.bind.JAXBContext;
@@ -13,7 +14,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import java.io.File;
 import java.util.List;
 
-public class XmlDao<T> extends FileDao<T> {
+public class XmlDao<T extends Identifiable<K>, K> extends FileDao<T, K> {
     public XmlDao(String filename, Class<T> clazz) {
         super(filename, clazz);
     }

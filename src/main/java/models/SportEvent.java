@@ -1,39 +1,38 @@
 package models;
 
-import dao.CsvDao;
-import com.fasterxml.jackson.annotation.JsonFormat;
+import app.Identifiable;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import app.Identifiable;
+import dao.CsvDao;
 
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.datatype.DatatypeConfigurationException;
-import javax.xml.datatype.DatatypeFactory;
-import javax.xml.datatype.XMLGregorianCalendar;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.UUID;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement
+@MappedSuperclass
 public class SportEvent implements Identifiable<String> {
+
+    @Id
+    @GeneratedValue
     private String id = "";
 
+    @Column(name = "title")
     private String title = "";
-    
+
+    @Column(name = "place")
     @CsvDao.Checkable(patten = "^([A-Z][a-z]*[-\\s]*)*$")
     private String place = "";
 
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    private XMLGregorianCalendar date;
-
-    {
-        try {
-            date = DatatypeFactory.newInstance().newXMLGregorianCalendar("2000-01-01");
-        } catch (DatatypeConfigurationException e) {
-            e.printStackTrace();
-        }
-    }
+    private Date date = new Date();
 
     private Attendance attendance = new Attendance();
 
@@ -41,7 +40,7 @@ public class SportEvent implements Identifiable<String> {
 
     public SportEvent(@JsonProperty(value = "id") String id,
                       @JsonProperty(value = "title") String title,
-                      @JsonProperty(value = "date") XMLGregorianCalendar date,
+                      @JsonProperty(value = "date") Date date,
                       @JsonProperty(value = "place") String place,
                       @JsonProperty(value = "attendance") Attendance attendance) {
         this.id = id;
@@ -73,8 +72,13 @@ public class SportEvent implements Identifiable<String> {
         return place;
     }
 
-    public XMLGregorianCalendar getDate() {
+    public Date getDate() {
         return date;
+    }
+
+    @JsonIgnore
+    public String getDateString(){
+        return new SimpleDateFormat("yyyy-MM-dd").format(date);
     }
 
     public Attendance getAttendance() {
@@ -93,7 +97,7 @@ public class SportEvent implements Identifiable<String> {
         this.place = place;
     }
 
-    public void setDate(XMLGregorianCalendar date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 

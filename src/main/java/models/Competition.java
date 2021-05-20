@@ -3,17 +3,25 @@ package models;
 import app.Identifiable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import dao.CsvDao;
+import jdk.jfr.Enabled;
 
+import javax.persistence.*;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.datatype.XMLGregorianCalendar;
+import java.util.Date;
 import java.util.UUID;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement
+@Entity
+@Table(name = "competitions")
+@NamedQuery(name = "Competition.getAll", query = "SELECT c FROM Competition c")
 public class Competition extends SportEvent {
 
+    @OneToOne (optional = false, cascade = CascadeType.ALL)
+    @JoinColumn (name = "pedestal_id")
     Pedestal pedestal = new Pedestal();
 
     public Competition() { }
@@ -21,7 +29,7 @@ public class Competition extends SportEvent {
     public Competition(@JsonProperty(value = "id") String id,
                        @JsonProperty(value = "title") String title,
                        @JsonProperty(value = "pedestal") Pedestal pedestal,
-                       @JsonProperty(value = "date") XMLGregorianCalendar date,
+                       @JsonProperty(value = "date") Date date,
                        @JsonProperty(value = "place") String place,
                        @JsonProperty(value = "attendance") Attendance attendance) {
         super(id, title,  date, place, attendance);
@@ -33,6 +41,7 @@ public class Competition extends SportEvent {
         return super.toString() + " " + pedestal;
     }
 
+
     public Pedestal getPedestal() {
         return pedestal;
     }
@@ -41,9 +50,17 @@ public class Competition extends SportEvent {
         this.pedestal = pedestal;
     }
 
+    @Entity
+    @Table(name = "pedestals")
     public static class Pedestal implements Identifiable<String> {
         private String gold = "", silver = "", bronze = "";
 
+        @OneToOne (optional=false, mappedBy="pedestal")
+        @CsvDao.Skip
+        Competition owner;
+
+        @Id
+        @GeneratedValue
         @CsvDao.Skip
         private String id = UUID.randomUUID().toString();
 

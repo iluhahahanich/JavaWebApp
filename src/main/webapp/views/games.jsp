@@ -30,7 +30,7 @@
                     <tr>
                         <td>${game.title}</td>
                         <td>${game.place}</td>
-                        <td>${game.date}</td>
+                        <td>${game.dateString}</td>
                         <td>${game.attendance.children}</td>
                         <td>${game.attendance.adults}</td>
                         <td>${game.attendance.elderly}</td>

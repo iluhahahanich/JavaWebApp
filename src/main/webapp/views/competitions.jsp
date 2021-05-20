@@ -41,7 +41,7 @@
                         </td>
                         <td>${comp.title}</td>
                         <td>${comp.place}</td>
-                        <td>${comp.date}</td>
+                        <td>${comp.dateString}</td>
                         <td>${comp.attendance.children}</td>
                         <td>${comp.attendance.adults}</td>
                         <td>${comp.attendance.elderly}</td>

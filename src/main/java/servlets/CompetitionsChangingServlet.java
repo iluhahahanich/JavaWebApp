@@ -12,25 +12,26 @@ import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
 @WebServlet("/competitions_changing")
 public class CompetitionsChangingServlet extends HttpServlet {
     private final ServiceLayer<Competition> serviceLayer = new ServiceLayer<>(Competition.class);
-    private List<Competition> data;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        data = serviceLayer.read();
-        req.setAttribute("data", data);
+        req.setAttribute("data", serviceLayer.readAll());
         req.getRequestDispatcher("views/competitions_changing.jsp").forward(req, resp);
     }
 
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        data = serviceLayer.read();
         if (req.getParameter("changeId") != null){
             String id = req.getParameter("changeId");
             req.setAttribute("changing", id);
@@ -40,19 +41,16 @@ public class CompetitionsChangingServlet extends HttpServlet {
             resp.sendRedirect("competitions");
         }
         else if (req.getParameter("new") != null){
-            String id = UUID.randomUUID().toString();
             var newCompetition = new Competition();
+            String id = UUID.randomUUID().toString();
             newCompetition.setId(id);
-            data.add(newCompetition);
-            serviceLayer.write(data);
+            serviceLayer.create(newCompetition);
             req.setAttribute("changing", id);
             this.doGet(req, resp);
         }
         else if (req.getParameter("okId") != null) {
             var params = req.getParameterNames();
-            var curCompetition = data.stream()
-                    .filter(e -> e.getId().equals(req.getParameter("okId")))
-                    .findFirst().get();
+            var curCompetition = serviceLayer.read(req.getParameter("okId"));
             for (String param; params.hasMoreElements(); ) {
                 param = params.nextElement();
                 switch (param) {
@@ -61,14 +59,9 @@ public class CompetitionsChangingServlet extends HttpServlet {
                     case "date" -> {
                         try {
                             var paramStr= req.getParameter(param);
-                            XMLGregorianCalendar date;
-                            if (paramStr.isBlank()){
-                                date = DatatypeFactory.newInstance().newXMLGregorianCalendar();
-                            } else {
-                                date = DatatypeFactory.newInstance().newXMLGregorianCalendar(paramStr);
-                            }
+                            Date date = new SimpleDateFormat("yyyy-MM-dd").parse(paramStr);
                             curCompetition.setDate(date);
-                        } catch (DatatypeConfigurationException e) {
+                        } catch (ParseException e) {
                             e.printStackTrace();
                         }
                     }
@@ -80,7 +73,7 @@ public class CompetitionsChangingServlet extends HttpServlet {
                     case "bronze" -> curCompetition.getPedestal().setBronze(req.getParameter(param));
                 }
             }
-            serviceLayer.write(data);
+            serviceLayer.update(curCompetition);
             resp.sendRedirect("competitions");
         }
     }

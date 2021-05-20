@@ -5,7 +5,6 @@ import dao.Dao;
 import dao.JsonDao;
 import dao.XmlDao;
 import exceptions.ServiceLayerException;
-import app.LoggingProxyHandler;
 import exceptions.ReadWriteException;
 import models.AgeGroup;
 import models.SportEvent;
@@ -13,38 +12,65 @@ import models.SportEvent;
 import java.io.File;
 import java.lang.reflect.Proxy;
 import java.time.DayOfWeek;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
-public class ServiceLayer<T> {
+public class ServiceLayer<T extends Identifiable<String>> {
 
     public static final String daoType = "json";
     public static final String appDir = "../webapps/UPweb/";
 
-    private Dao<T> readDao, writeDao;
+    private Dao<T, String> dao;
 
     public ServiceLayer(Class<T> clazz) {
         initDao(clazz);
     }
 
-    public List<T> read() {
+    public void delete(String key) {
         synchronized (Dao.class) {
             try {
-                return readDao.read();
-            } catch (ReadWriteException e) {
+                dao.delete(key);
+            } catch (ReadWriteException e){
                 throw new ServiceLayerException(e);
             }
         }
     }
 
-    public void write(List<T> data) {
+    public void create(T obj) {
         synchronized (Dao.class) {
             try {
-                writeDao.write(data);
-            } catch (ReadWriteException e) {
+                dao.create(obj);
+            } catch (ReadWriteException e){
+                throw new ServiceLayerException(e);
+            }
+        }
+    }
+
+    public List<T> readAll() {
+        synchronized (Dao.class) {
+            try {
+                return dao.readAll();
+            } catch (ReadWriteException e){
+                throw new ServiceLayerException(e);
+            }
+        }
+    }
+
+    public T read(String key) {
+        synchronized (Dao.class) {
+            try {
+                return dao.read(key);
+            } catch (ReadWriteException e){
+                throw new ServiceLayerException(e);
+            }
+        }
+    }
+
+    public void update(T obj) {
+        synchronized (Dao.class) {
+            try {
+                dao.update(obj);
+            } catch (ReadWriteException e){
                 throw new ServiceLayerException(e);
             }
         }
@@ -53,25 +79,21 @@ public class ServiceLayer<T> {
     private void initDao(Class<T> clazz){
         switch (daoType) {
             case "xml" -> {
-                readDao = new XmlDao<T>(appDir + "data/in_" + clazz.getSimpleName() + ".xml", clazz);
-                writeDao = new XmlDao<T>(appDir + "data/in_" + clazz.getSimpleName() + ".xml", clazz);
+                dao = new XmlDao<>(appDir + "data/in_" + clazz.getSimpleName() + ".xml", clazz);
             }
             case "json" -> {
-                readDao = new JsonDao<T>(appDir + "data/in_" + clazz.getSimpleName() + ".json", clazz);
-                writeDao = new JsonDao<T>(appDir + "data/in_" + clazz.getSimpleName() + ".json", clazz);
+                dao = new JsonDao<>(appDir + "data/in_" + clazz.getSimpleName() + ".json", clazz);
             }
             case "csv" -> {
-                readDao = new CsvDao<T>(appDir + "data/in_" + clazz.getSimpleName() + ".csv", clazz);
-                writeDao = new CsvDao<T>(appDir + "data/in_" + clazz.getSimpleName() + ".csv", clazz);
+                dao = new CsvDao<>(appDir + "data/in_" + clazz.getSimpleName() + ".csv", clazz);
             }
         }
 
-        readDao = getLogged(readDao);
-        writeDao = getLogged(writeDao);
+        dao = getLogged(dao);
     }
 
-    private Dao<T> getLogged(Dao<T> dao){
-        return (Dao<T>) Proxy.newProxyInstance(
+    private Dao<T, String> getLogged(Dao<T, String> dao){
+        return (Dao<T, String>) Proxy.newProxyInstance(
                 LoggingProxyHandler.class.getClassLoader(),
                 new Class[]{Dao.class},
                 new LoggingProxyHandler<>(dao, new File(appDir + "log.txt")));
@@ -85,7 +107,7 @@ public class ServiceLayer<T> {
 
     public int getAverageByDayOfWeek(List<? extends SportEvent> events, DayOfWeek dayOfWeek){
         var attendance = events.stream()
-                .filter(e -> dayOfWeek.equals(DayOfWeek.of(e.getDate().toGregorianCalendar().get(Calendar.DAY_OF_WEEK))))
+                .filter(e -> dayOfWeek.equals(DayOfWeek.of(e.getDate().getDay())))
                 .mapToInt(e -> e.getAttendance().getTotalAttendance())
                 .toArray();
         return attendance.length != 0 ? Arrays.stream(attendance).sum() / attendance.length : 0;
