@@ -1,22 +1,17 @@
 package servlets;
 
-import models.Competition;
 import app.ServiceLayer;
+import models.Competition;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.xml.datatype.DatatypeConfigurationException;
-import javax.xml.datatype.DatatypeFactory;
-import javax.xml.datatype.XMLGregorianCalendar;
 import java.io.IOException;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 import java.util.UUID;
 
 @WebServlet("/competitions_changing")
@@ -42,10 +37,8 @@ public class CompetitionsChangingServlet extends HttpServlet {
         }
         else if (req.getParameter("new") != null){
             var newCompetition = new Competition();
-            String id = UUID.randomUUID().toString();
-            newCompetition.setId(id);
             serviceLayer.create(newCompetition);
-            req.setAttribute("changing", id);
+            req.setAttribute("changing", newCompetition.getId());
             this.doGet(req, resp);
         }
         else if (req.getParameter("okId") != null) {

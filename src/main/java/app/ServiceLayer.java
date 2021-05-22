@@ -1,9 +1,6 @@
 package app;
 
-import dao.CsvDao;
-import dao.Dao;
-import dao.JsonDao;
-import dao.XmlDao;
+import dao.*;
 import exceptions.ServiceLayerException;
 import exceptions.ReadWriteException;
 import models.AgeGroup;
@@ -17,7 +14,7 @@ import java.util.stream.Collectors;
 
 public class ServiceLayer<T extends Identifiable<String>> {
 
-    public static final String daoType = "json";
+    public static final String daoType = "postgre";
     public static final String appDir = "../webapps/UPweb/";
 
     private Dao<T, String> dao;
@@ -86,6 +83,9 @@ public class ServiceLayer<T extends Identifiable<String>> {
             }
             case "csv" -> {
                 dao = new CsvDao<>(appDir + "data/in_" + clazz.getSimpleName() + ".csv", clazz);
+            }
+            case "postgre" -> {
+                dao = new PostgreSqlDao<>(clazz);
             }
         }
 

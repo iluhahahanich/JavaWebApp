@@ -4,6 +4,7 @@ import app.Identifiable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import dao.CsvDao;
 
+import javax.persistence.*;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -13,7 +14,10 @@ import java.util.UUID;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement
+@Entity
+@Table(name = "games")
 public class Game extends SportEvent {
+    @Embedded
     private Score score = new Score();
 
     public Game() { }
@@ -41,9 +45,17 @@ public class Game extends SportEvent {
         this.score = score;
     }
 
-    public static class Score implements Identifiable<String> {
-        private int first = 0, second = 0;
 
+    @Embeddable
+    public static class Score implements Identifiable<String> {
+
+        @Column(name = "first")
+        private int first = 0;
+
+        @Column(name = "second")
+        private int second = 0;
+
+        @Transient
         @CsvDao.Skip
         private String id = UUID.randomUUID().toString();
 

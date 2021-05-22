@@ -3,13 +3,11 @@ package models;
 import app.Identifiable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import dao.CsvDao;
-import jdk.jfr.Enabled;
 
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.datatype.XMLGregorianCalendar;
 import java.util.Date;
 import java.util.UUID;
 
@@ -17,14 +15,13 @@ import java.util.UUID;
 @XmlRootElement
 @Entity
 @Table(name = "competitions")
-@NamedQuery(name = "Competition.getAll", query = "SELECT c FROM Competition c")
 public class Competition extends SportEvent {
 
-    @OneToOne (optional = false, cascade = CascadeType.ALL)
-    @JoinColumn (name = "pedestal_id")
+    @Embedded
     Pedestal pedestal = new Pedestal();
 
-    public Competition() { }
+    public Competition() {
+    }
 
     public Competition(@JsonProperty(value = "id") String id,
                        @JsonProperty(value = "title") String title,
@@ -49,18 +46,20 @@ public class Competition extends SportEvent {
     public void setPedestal(Pedestal pedestal) {
         this.pedestal = pedestal;
     }
+    
+    @Embeddable
+    public static class Pedestal implements Identifiable<String>{
 
-    @Entity
-    @Table(name = "pedestals")
-    public static class Pedestal implements Identifiable<String> {
-        private String gold = "", silver = "", bronze = "";
+        @Column(name = "gold")
+        private String gold = "";
 
-        @OneToOne (optional=false, mappedBy="pedestal")
-        @CsvDao.Skip
-        Competition owner;
+        @Column(name = "silver")
+        private String silver = "";
 
-        @Id
-        @GeneratedValue
+        @Column(name = "bronze")
+        private String bronze = "";
+
+        @Transient
         @CsvDao.Skip
         private String id = UUID.randomUUID().toString();
 

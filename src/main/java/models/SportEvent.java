@@ -4,11 +4,9 @@ import app.Identifiable;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import dao.CsvDao;
+import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
+import javax.persistence.*;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -22,19 +20,22 @@ import java.util.UUID;
 public class SportEvent implements Identifiable<String> {
 
     @Id
-    @GeneratedValue
-    private String id = "";
+    @GeneratedValue(generator = "system-uuid")
+    @GenericGenerator(name = "system-uuid", strategy = "uuid")
+    protected String id;
 
     @Column(name = "title")
-    private String title = "";
+    protected String title = "";
 
     @Column(name = "place")
     @CsvDao.Checkable(patten = "^([A-Z][a-z]*[-\\s]*)*$")
-    private String place = "";
+    protected String place = "";
 
-    private Date date = new Date();
+    @Column(name = "date")
+    protected Date date = new Date();
 
-    private Attendance attendance = new Attendance();
+    @Embedded
+    protected Attendance attendance = new Attendance();
 
     public SportEvent(){}
 
@@ -107,10 +108,20 @@ public class SportEvent implements Identifiable<String> {
 
     @XmlAccessorType(XmlAccessType.FIELD)
     @XmlRootElement(name = "Attendance")
+    @Embeddable
     public static class Attendance implements Identifiable<String>{
 
-        private int children = 0, adults = 0, elderly = 0;
+        @Column(name = "children")
+        private int children = 0;
 
+        @Column(name = "adults")
+        private int adults = 0;
+
+        @Column(name = "elderly")
+        private int elderly = 0;
+
+
+        @Transient
         @CsvDao.Skip
         private String id = UUID.randomUUID().toString();
 
@@ -178,6 +189,7 @@ public class SportEvent implements Identifiable<String> {
         public void setElderly(int elderly) {
             this.elderly = elderly;
         }
+
     }
 
 }
