@@ -54,9 +54,35 @@ public class PostgreSqlDao<T extends Identifiable<String>> implements Dao<T, Str
 
     // TODO: fix
     public List<T> readAll() {
+//        CriteriaBuilder cb = em.getCriteriaBuilder();
+//        CriteriaQuery<T> cq = cb.createQuery(clazz);
+//        Root<T> rootEntry = cq.from(clazz);
+//        CriteriaQuery<T> all = cq.select(rootEntry);
+//
+//        TypedQuery<T> allQuery = em.createQuery(all);
+//        return allQuery.getResultList();
+
+//        List<T> list;
+//        try {
+//            if (!em.getTransaction().isActive()) {
+//                em.getTransaction().begin();
+//            }
+//            list = em.createQuery("FROM " + this.clazz.getSimpleName()).getResultList();
+//            em.getTransaction().commit();
+//
+//        } catch (HibernateException e) {
+//            em.getTransaction().rollback();
+//            throw e;
+//        } finally {
+////            em.close();
+//        }
+//        return list;
+
+
 //        TypedQuery<T> namedQuery = em.createNamedQuery(this.clazz.getSimpleName() + ".getAll", this.clazz);
 //        var query = em.createQuery("SELECT c FROM " + this.clazz.getSimpleName() + " c");
-        var query = em.createQuery("FROM " + this.clazz.getSimpleName());
+
+        var query = em.createQuery("FROM " + this.clazz.getSimpleName(), clazz);
         return query.getResultList();
     }
 }
