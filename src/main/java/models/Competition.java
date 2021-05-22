@@ -14,10 +14,12 @@ import java.util.UUID;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement
 @Entity
+@dev.morphia.annotations.Entity("competitions")
 @Table(name = "competitions")
 public class Competition extends SportEvent {
 
     @Embedded
+    @dev.morphia.annotations.Embedded
     Pedestal pedestal = new Pedestal();
 
     public Competition() {
@@ -61,6 +63,7 @@ public class Competition extends SportEvent {
 
         @Transient
         @CsvDao.Skip
+        @dev.morphia.annotations.Transient
         private String id = UUID.randomUUID().toString();
 
         public Pedestal() {}

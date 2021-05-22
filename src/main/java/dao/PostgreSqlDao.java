@@ -8,7 +8,7 @@ import java.util.List;
 
 public class PostgreSqlDao<T extends Identifiable<String>> implements Dao<T, String> {
 
-    public EntityManager em = Persistence.createEntityManagerFactory("POSTGRE").createEntityManager();
+    private EntityManager em = Persistence.createEntityManagerFactory("POSTGRE").createEntityManager();
 
     protected Class<T> clazz = null;
 
@@ -52,7 +52,7 @@ public class PostgreSqlDao<T extends Identifiable<String>> implements Dao<T, Str
         em.getTransaction().commit();
     }
 
-    // TODO: fix
+    // FIXME: getting outdated data
     public List<T> readAll() {
 //        CriteriaBuilder cb = em.getCriteriaBuilder();
 //        CriteriaQuery<T> cq = cb.createQuery(clazz);

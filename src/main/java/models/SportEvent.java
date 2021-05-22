@@ -17,11 +17,13 @@ import java.util.UUID;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement
 @MappedSuperclass
+@dev.morphia.annotations.Entity
 public class SportEvent implements Identifiable<String> {
 
     @Id
     @GeneratedValue(generator = "system-uuid")
     @GenericGenerator(name = "system-uuid", strategy = "uuid")
+    @dev.morphia.annotations.Id
     protected String id;
 
     @Column(name = "title")
@@ -35,6 +37,7 @@ public class SportEvent implements Identifiable<String> {
     protected Date date = new Date();
 
     @Embedded
+    @dev.morphia.annotations.Embedded
     protected Attendance attendance = new Attendance();
 
     public SportEvent(){}
@@ -122,6 +125,7 @@ public class SportEvent implements Identifiable<String> {
 
 
         @Transient
+        @dev.morphia.annotations.Transient
         @CsvDao.Skip
         private String id = UUID.randomUUID().toString();
 

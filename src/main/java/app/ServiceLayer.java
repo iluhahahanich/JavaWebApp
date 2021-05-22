@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 
 public class ServiceLayer<T extends Identifiable<String>> {
 
-    public static final String daoType = "postgre";
+    public static final String daoType = "mongo";
     public static final String appDir = "../webapps/UPweb/";
 
     private Dao<T, String> dao;
@@ -86,6 +86,9 @@ public class ServiceLayer<T extends Identifiable<String>> {
             }
             case "postgre" -> {
                 dao = new PostgreSqlDao<>(clazz);
+            }
+            case "mongo" -> {
+                dao = new MongoDbDao<>(clazz);
             }
         }
 
