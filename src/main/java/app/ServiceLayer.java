@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 
 public class ServiceLayer<T extends Identifiable<String>> {
 
-    public static final String daoType = "mongo";
+    public static String daoType = "mongo";
     public static final String appDir = "../webapps/UPweb/";
 
     private Dao<T, String> dao;

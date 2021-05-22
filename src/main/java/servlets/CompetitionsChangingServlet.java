@@ -37,6 +37,10 @@ public class CompetitionsChangingServlet extends HttpServlet {
         }
         else if (req.getParameter("new") != null){
             var newCompetition = new Competition();
+            if (!ServiceLayer.daoType.equals("mongo") && !ServiceLayer.daoType.equals("postgre")) {
+                String id = UUID.randomUUID().toString();
+                newCompetition.setId(id);
+            }
             serviceLayer.create(newCompetition);
             req.setAttribute("changing", newCompetition.getId());
             this.doGet(req, resp);
