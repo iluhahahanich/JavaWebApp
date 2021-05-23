@@ -11,6 +11,9 @@
         </style>
     </head>
     <body>
+    <p class="btn position-absolute">
+        <a href="home">&larr;Home</a>
+    </p>
         <h1 class="event-title">Competitions</h1>
         <table class="table table-hover table-bordered">
             <thead>
@@ -54,7 +57,7 @@
             </tbody>
         </table>
         <form method="post" action="competitions_changing">
-            <button class="cent-btn btn btn-primary" type="submit" name="new" value="1">new</button>
+            <button class="new-btn btn btn-primary" type="submit" name="new" value="1">new</button>
         </form>
     </body>
 </html>

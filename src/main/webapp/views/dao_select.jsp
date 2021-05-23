@@ -13,18 +13,21 @@
     </style>
 </head>
 <body>
+    <p class="btn position-absolute">
+        <a href="home">&larr;Home</a>
+    </p>
     <h1 class="event-title">Dao Select</h1>
-    <form action="dao_select" method="post">
+    <form class="centered" action="dao_select" method="post">
         <select class="custom-select custom-select-lg" size="5" name="daoType" >
             <% for(DaoType type: DaoType.values()) { %>
-                <option class="centered"
+                <option class="cent-text"
                         <% if(ServiceLayer.getDaoType() == type) {%> selected <% } %>
                         value = "<%= type.name()%>" >
                     <%= type.name() %>
                 </option >
             <% } %>
         </select >
-        <button class="cent-btn btn btn-primary" type="submit">OK</button>
+        <button class="dao-select-ok btn btn-primary" type="submit">OK</button>
     </form>
 </body>
 </html>

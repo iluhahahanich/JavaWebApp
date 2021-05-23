@@ -11,6 +11,9 @@
         </style>
     </head>
     <body>
+        <p class="btn position-absolute">
+            <a href="home">&larr;Home</a>
+        </p>
         <h1 class="event-title">Matches</h1>
         <table class="table table-hover table-bordered">
             <thead>
