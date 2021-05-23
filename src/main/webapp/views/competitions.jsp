@@ -54,7 +54,7 @@
             </tbody>
         </table>
         <form method="post" action="competitions_changing">
-            <button class="new-btn btn btn-primary" type="submit" name="new" value="1">new</button>
+            <button class="cent-btn btn btn-primary" type="submit" name="new" value="1">new</button>
         </form>
     </body>
 </html>

@@ -1,5 +1,6 @@
 package servlets;
 
+import app.DaoType;
 import app.ServiceLayer;
 import models.Competition;
 
@@ -24,7 +25,6 @@ public class CompetitionsChangingServlet extends HttpServlet {
         req.getRequestDispatcher("views/competitions_changing.jsp").forward(req, resp);
     }
 
-
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         if (req.getParameter("changeId") != null){
@@ -37,7 +37,7 @@ public class CompetitionsChangingServlet extends HttpServlet {
         }
         else if (req.getParameter("new") != null){
             var newCompetition = new Competition();
-            if (!ServiceLayer.daoType.equals("mongo") && !ServiceLayer.daoType.equals("postgre")) {
+            if (ServiceLayer.getDaoType() != DaoType.MONGO && ServiceLayer.getDaoType() != DaoType.POSTGRE) {
                 String id = UUID.randomUUID().toString();
                 newCompetition.setId(id);
             }

@@ -14,16 +14,18 @@ import java.util.stream.Collectors;
 
 public class ServiceLayer<T extends Identifiable<String>> {
 
-    public static String daoType = "mongo";
+    private static DaoType daoType = DaoType.MONGO;
     public static final String appDir = "../webapps/UPweb/";
 
     private Dao<T, String> dao;
 
+    private final Class<T> clazz;
     public ServiceLayer(Class<T> clazz) {
-        initDao(clazz);
+        this.clazz = clazz;
     }
 
     public void delete(String key) {
+        initDao(clazz);
         synchronized (Dao.class) {
             try {
                 dao.delete(key);
@@ -34,6 +36,7 @@ public class ServiceLayer<T extends Identifiable<String>> {
     }
 
     public void create(T obj) {
+        initDao(clazz);
         synchronized (Dao.class) {
             try {
                 dao.create(obj);
@@ -44,6 +47,7 @@ public class ServiceLayer<T extends Identifiable<String>> {
     }
 
     public List<T> readAll() {
+        initDao(clazz);
         synchronized (Dao.class) {
             try {
                 return dao.readAll();
@@ -54,6 +58,7 @@ public class ServiceLayer<T extends Identifiable<String>> {
     }
 
     public T read(String key) {
+        initDao(clazz);
         synchronized (Dao.class) {
             try {
                 return dao.read(key);
@@ -64,6 +69,7 @@ public class ServiceLayer<T extends Identifiable<String>> {
     }
 
     public void update(T obj) {
+        initDao(clazz);
         synchronized (Dao.class) {
             try {
                 dao.update(obj);
@@ -75,21 +81,11 @@ public class ServiceLayer<T extends Identifiable<String>> {
 
     private void initDao(Class<T> clazz){
         switch (daoType) {
-            case "xml" -> {
-                dao = new XmlDao<>(appDir + "data/in_" + clazz.getSimpleName() + ".xml", clazz);
-            }
-            case "json" -> {
-                dao = new JsonDao<>(appDir + "data/in_" + clazz.getSimpleName() + ".json", clazz);
-            }
-            case "csv" -> {
-                dao = new CsvDao<>(appDir + "data/in_" + clazz.getSimpleName() + ".csv", clazz);
-            }
-            case "postgre" -> {
-                dao = new PostgreSqlDao<>(clazz);
-            }
-            case "mongo" -> {
-                dao = new MongoDbDao<>(clazz);
-            }
+            case XML -> dao = new XmlDao<>(appDir + "data/in_" + clazz.getSimpleName() + ".xml", clazz);
+            case JSON -> dao = new JsonDao<>(appDir + "data/in_" + clazz.getSimpleName() + ".json", clazz);
+            case CSV -> dao = new CsvDao<>(appDir + "data/in_" + clazz.getSimpleName() + ".csv", clazz);
+            case POSTGRE -> dao = new PostgreSqlDao<>(clazz);
+            case MONGO -> dao = new MongoDbDao<>(clazz);
         }
 
         dao = getLogged(dao);
@@ -114,5 +110,13 @@ public class ServiceLayer<T extends Identifiable<String>> {
                 .mapToInt(e -> e.getAttendance().getTotalAttendance())
                 .toArray();
         return attendance.length != 0 ? Arrays.stream(attendance).sum() / attendance.length : 0;
+    }
+
+    public static void setDaoType(DaoType daoType) {
+        ServiceLayer.daoType = daoType;
+    }
+
+    public static DaoType getDaoType() {
+        return daoType;
     }
 }
