@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<data xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <elem xsi:type="competition">
+        <id>1</id>
+        <title>WorldBestProgrammer2021</title>
+        <date>2021-01-23</date>
+        <place>Minsk</place>
+        <attendance>
+            <children>12</children>
+            <adults>24</adults>
+            <elderly>2</elderly>
+        </attendance>
+        <pedestal>
+            <gold>turist</gold>
+            <silver>iluha</silver>
+            <bronze>lyoha</bronze>
+        </pedestal>
+    </elem>
+    <elem xsi:type="competition">
+        <id>2</id>
+        <title>WorldCup2018</title>
+        <date>2018-07-01</date>
+        <place>Russia</place>
+        <attendance>
+            <children>1200</children>
+            <adults>2400</adults>
+            <elderly>200</elderly>
+        </attendance>
+        <pedestal>
+            <gold>France</gold>
+            <silver>Croatia</silver>
+            <bronze>Belgium</bronze>
+        </pedestal>
+    </elem>
+    <elem xsi:type="competition">
+        <id>3</id>
+        <title>OlympicGames: Biathlon</title>
+        <date>2018-10-01</date>
+        <place>Korea</place>
+        <attendance>
+            <children>120</children>
+            <adults>240</adults>
+            <elderly>20</elderly>
+        </attendance>
+        <pedestal>
+            <gold>Domracheva</gold>
+            <silver>Skardino</silver>
+            <bronze>Rand Swedish peron</bronze>
+        </pedestal>
+    </elem>
+</data>

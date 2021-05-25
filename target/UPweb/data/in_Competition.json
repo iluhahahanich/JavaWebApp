@@ -1,0 +1,50 @@
+[
+  {
+    "id": 1,
+    "title": "WorldBestProgrammer2021",
+    "pedestal": {
+      "gold": "turist",
+      "silver": "iluha",
+      "bronze": "lyoha"
+    },
+    "date": "2021-01-23",
+    "place": "Minsk",
+    "attendance": {
+      "children": 1,
+      "adults": 2,
+      "elderly": 100500
+    }
+  },
+  {
+    "id": 2,
+    "title": "WorldCup2018",
+    "pedestal": {
+      "gold": "France",
+      "silver": "Croatia",
+      "bronze": "Belgium"
+    },
+    "date": "2018-07-01",
+    "place": "Russia",
+    "attendance": {
+      "children": 100,
+      "adults": 200000,
+      "elderly": 100500
+    }
+  },
+  {
+    "id": 3,
+    "title": "OlympicGames: Biathlon",
+    "pedestal": {
+      "gold": "Domracheva",
+      "silver": "Skardino",
+      "bronze": "Random Swedish Person"
+    },
+    "date": "2018-10-01",
+    "place": "Korea",
+    "attendance": {
+      "children": 100,
+      "adults": 2000,
+      "elderly": 10500
+    }
+  }
+]
