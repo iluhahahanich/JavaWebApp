@@ -11,6 +11,9 @@
         </style>
     </head>
     <body>
+    <p class="btn position-absolute">
+        <a href="home">&larr;Home</a>
+    </p>
         <h1 class="event-title">Competitions</h1>
         <table class="table table-hover table-bordered">
             <thead>
@@ -41,7 +44,7 @@
                         </td>
                         <td>${comp.title}</td>
                         <td>${comp.place}</td>
-                        <td>${comp.date}</td>
+                        <td>${comp.dateString}</td>
                         <td>${comp.attendance.children}</td>
                         <td>${comp.attendance.adults}</td>
                         <td>${comp.attendance.elderly}</td>

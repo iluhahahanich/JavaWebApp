@@ -1,24 +1,34 @@
 package models;
 
+import app.Identifiable;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import dao.CsvDao;
 
+import javax.persistence.*;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.datatype.XMLGregorianCalendar;
+import java.util.Date;
+import java.util.UUID;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement
+@Entity
+@dev.morphia.annotations.Entity("competitions")
+@Table(name = "competitions")
 public class Competition extends SportEvent {
 
+    @Embedded
+    @dev.morphia.annotations.Embedded
     Pedestal pedestal = new Pedestal();
 
-    public Competition() { }
+    public Competition() {
+    }
 
     public Competition(@JsonProperty(value = "id") String id,
                        @JsonProperty(value = "title") String title,
                        @JsonProperty(value = "pedestal") Pedestal pedestal,
-                       @JsonProperty(value = "date") XMLGregorianCalendar date,
+                       @JsonProperty(value = "date") Date date,
                        @JsonProperty(value = "place") String place,
                        @JsonProperty(value = "attendance") Attendance attendance) {
         super(id, title,  date, place, attendance);
@@ -30,6 +40,7 @@ public class Competition extends SportEvent {
         return super.toString() + " " + pedestal;
     }
 
+
     public Pedestal getPedestal() {
         return pedestal;
     }
@@ -37,9 +48,23 @@ public class Competition extends SportEvent {
     public void setPedestal(Pedestal pedestal) {
         this.pedestal = pedestal;
     }
+    
+    @Embeddable
+    public static class Pedestal implements Identifiable<String>{
 
-    public static class Pedestal {
-        private String gold = "", silver = "", bronze = "";
+        @Column(name = "gold")
+        private String gold = "";
+
+        @Column(name = "silver")
+        private String silver = "";
+
+        @Column(name = "bronze")
+        private String bronze = "";
+
+        @Transient
+        @CsvDao.Skip
+        @dev.morphia.annotations.Transient
+        private String id = UUID.randomUUID().toString();
 
         public Pedestal() {}
 
@@ -49,6 +74,16 @@ public class Competition extends SportEvent {
             this.gold = gold;
             this.silver = silver;
             this.bronze = bronze;
+        }
+
+        @Override
+        public String getId() {
+            return id;
+        }
+
+        @Override
+        public void setId(String id) {
+            this.id = id;
         }
 
         @Override

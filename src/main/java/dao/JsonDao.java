@@ -1,5 +1,6 @@
 package dao;
 
+import app.Identifiable;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import exceptions.ReadWriteException;
 
@@ -7,7 +8,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-public class JsonDao<T> extends FileDao<T> {
+public class JsonDao<T extends Identifiable<K>, K> extends FileDao<T, K> {
     public JsonDao(String filename, Class<T> clazz) {
         super(filename, clazz);
     }

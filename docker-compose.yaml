@@ -1,0 +1,28 @@
+version: '3.7'
+services:
+  app:
+    build:
+      context: .
+    ports:
+      - 8080:8080
+    volumes:
+#      - ./src:/home/UPweb/src
+      - ./src/main/webapp/data:/webapps/UPweb/data
+    depends_on:
+      - mysql
+      - mongodb
+
+  mysql:
+    image: mysql:latest
+    environment:
+      MYSQL_DATABASE: up_db
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - ./mysql/init:/docker-entrypoint-initdb.d
+    ports:
+       - 3306:3306
+
+  mongodb:
+    image: mongo:latest
+    ports:
+      - 27017:27017

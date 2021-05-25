@@ -1,46 +1,50 @@
 package models;
 
-import dao.CsvDao;
-import com.fasterxml.jackson.annotation.JsonFormat;
+import app.Identifiable;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import models.AgeGroup;
+import dao.CsvDao;
+import org.hibernate.annotations.GenericGenerator;
 
+import javax.persistence.*;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.datatype.DatatypeConfigurationException;
-import javax.xml.datatype.DatatypeFactory;
-import javax.xml.datatype.XMLGregorianCalendar;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.UUID;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement
-public class SportEvent {
-    private String id = "";
+@MappedSuperclass
+@dev.morphia.annotations.Entity
+public class SportEvent implements Identifiable<String> {
 
-    private String title = "";
-    
+    @Id
+    @GeneratedValue(generator = "system-uuid")
+    @GenericGenerator(name = "system-uuid", strategy = "uuid")
+    @dev.morphia.annotations.Id
+    protected String id;
+
+    @Column(name = "title")
+    protected String title = "";
+
+    @Column(name = "place")
     @CsvDao.Checkable(patten = "^([A-Z][a-z]*[-\\s]*)*$")
-    private String place = "";
+    protected String place = "";
 
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    private XMLGregorianCalendar date;
+    @Column(name = "date")
+    protected Date date = new Date();
 
-    {
-        try {
-            date = DatatypeFactory.newInstance().newXMLGregorianCalendar("2000-01-01");
-        } catch (DatatypeConfigurationException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private Attendance attendance = new Attendance();
+    @Embedded
+    @dev.morphia.annotations.Embedded
+    protected Attendance attendance = new Attendance();
 
     public SportEvent(){}
 
     public SportEvent(@JsonProperty(value = "id") String id,
                       @JsonProperty(value = "title") String title,
-                      @JsonProperty(value = "date") XMLGregorianCalendar date,
+                      @JsonProperty(value = "date") Date date,
                       @JsonProperty(value = "place") String place,
                       @JsonProperty(value = "attendance") Attendance attendance) {
         this.id = id;
@@ -72,8 +76,13 @@ public class SportEvent {
         return place;
     }
 
-    public XMLGregorianCalendar getDate() {
+    public Date getDate() {
         return date;
+    }
+
+    @JsonIgnore
+    public String getDateString(){
+        return new SimpleDateFormat("yyyy-MM-dd").format(date);
     }
 
     public Attendance getAttendance() {
@@ -92,7 +101,7 @@ public class SportEvent {
         this.place = place;
     }
 
-    public void setDate(XMLGregorianCalendar date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 
@@ -102,9 +111,23 @@ public class SportEvent {
 
     @XmlAccessorType(XmlAccessType.FIELD)
     @XmlRootElement(name = "Attendance")
-    public static class Attendance {
+    @Embeddable
+    public static class Attendance implements Identifiable<String>{
 
-        private int children = 0, adults = 0, elderly = 0;
+        @Column(name = "children")
+        private int children = 0;
+
+        @Column(name = "adults")
+        private int adults = 0;
+
+        @Column(name = "elderly")
+        private int elderly = 0;
+
+
+        @Transient
+        @dev.morphia.annotations.Transient
+        @CsvDao.Skip
+        private String id = UUID.randomUUID().toString();
 
         public Attendance(){}
 
@@ -125,6 +148,16 @@ public class SportEvent {
                 case ADULT -> adults;
                 case OLD -> elderly;
             };
+        }
+
+        @Override
+        public String getId() {
+            return id;
+        }
+
+        @Override
+        public void setId(String id) {
+            this.id = id;
         }
 
         @Override
@@ -160,6 +193,7 @@ public class SportEvent {
         public void setElderly(int elderly) {
             this.elderly = elderly;
         }
+
     }
 
 }

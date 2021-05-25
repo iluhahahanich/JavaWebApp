@@ -11,38 +11,41 @@
     </style>
 </head>
 <body>
-<h1 class="event-title">Sorted by Adults attendance Competitions</h1>
-<table class="table table-hover table-bordered">
-    <thead>
-    <tr>
-        <th>Title</th>
-        <th>Palace</th>
-        <th>Date</th>
-        <th>Children</th>
-        <th>Adults</th>
-        <th>Elderly</th>
-        <th>Gold</th>
-        <th>Silver</th>
-        <th>Bronze</th>
-    </tr>
-    </thead>
-    <tbody>
-    <jsp:useBean id="data" scope="request" type="java.util.List"/>
-    <c:forEach items="${data}" var="comp">
+    <p class="btn position-absolute">
+        <a href="home">&larr;Home</a>
+    </p>
+    <h1 class="event-title">Sorted by Adults attendance Competitions</h1>
+    <table class="table table-hover table-bordered">
+        <thead>
         <tr>
-            <td>${comp.title}</td>
-            <td>${comp.place}</td>
-            <td>${comp.date}</td>
-            <td>${comp.attendance.children}</td>
-            <td>${comp.attendance.adults}</td>
-            <td>${comp.attendance.elderly}</td>
-            <td>${comp.pedestal.gold}</td>
-            <td>${comp.pedestal.silver}</td>
-            <td>${comp.pedestal.bronze}</td>
+            <th>Title</th>
+            <th>Palace</th>
+            <th>Date</th>
+            <th>Children</th>
+            <th>Adults</th>
+            <th>Elderly</th>
+            <th>Gold</th>
+            <th>Silver</th>
+            <th>Bronze</th>
         </tr>
+        </thead>
+        <tbody>
+        <jsp:useBean id="data" scope="request" type="java.util.List"/>
+        <c:forEach items="${data}" var="comp">
+            <tr>
+                <td>${comp.title}</td>
+                <td>${comp.place}</td>
+                <td>${comp.dateString}</td>
+                <td>${comp.attendance.children}</td>
+                <td>${comp.attendance.adults}</td>
+                <td>${comp.attendance.elderly}</td>
+                <td>${comp.pedestal.gold}</td>
+                <td>${comp.pedestal.silver}</td>
+                <td>${comp.pedestal.bronze}</td>
+            </tr>
 
-    </c:forEach>
-    </tbody>
-</table>
+        </c:forEach>
+        </tbody>
+    </table>
 </body>
 </html>
