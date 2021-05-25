@@ -4,6 +4,6 @@ public enum DaoType {
     CSV,
     XML,
     JSON,
-    POSTGRE,
+    MYSQL,
     MONGO,
 }

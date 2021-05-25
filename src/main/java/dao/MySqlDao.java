@@ -6,13 +6,13 @@ import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
 import java.util.List;
 
-public class PostgreSqlDao<T extends Identifiable<String>> implements Dao<T, String> {
+public class MySqlDao<T extends Identifiable<String>> implements Dao<T, String> {
 
-    private EntityManager em = Persistence.createEntityManagerFactory("POSTGRE").createEntityManager();
+    private EntityManager em = Persistence.createEntityManagerFactory("MYSQL").createEntityManager();
 
     protected Class<T> clazz = null;
 
-    public PostgreSqlDao(Class<T> clazz) {
+    public MySqlDao(Class<T> clazz) {
         this.clazz = clazz;
     }
 

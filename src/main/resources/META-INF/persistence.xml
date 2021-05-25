@@ -5,30 +5,30 @@
                                  http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd"
              version="1.0">
 
-    <persistence-unit name="POSTGRE" transaction-type="RESOURCE_LOCAL">
-        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+<!--    <persistence-unit name="POSTGRE" transaction-type="RESOURCE_LOCAL">-->
+<!--        <provider>org.hibernate.ejb.HibernatePersistence</provider>-->
 
-        <properties>
-            <property name="hibernate.connection.driver_class" value="org.postgresql.Driver"/>
-            <property name="hibernate.connection.url" value="jdbc:postgresql://localhost:5432/up_db"/>
-            <property name="hibernate.connection.username" value="postgres"/>
-            <property name="hibernate.connection.password" value="123"/>
-            <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQL9Dialect"/>
-            <property name="hibernate.hbm2ddl.auto" value="update"/>
-        </properties>
-    </persistence-unit>
+<!--        <properties>-->
+<!--            <property name="hibernate.connection.driver_class" value="org.postgresql.Driver"/>-->
+<!--            <property name="hibernate.connection.url" value="jdbc:postgresql://localhost:5432/up_db"/>-->
+<!--            <property name="hibernate.connection.username" value="postgres"/>-->
+<!--            <property name="hibernate.connection.password" value="123"/>-->
+<!--            <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQL9Dialect"/>-->
+<!--            <property name="hibernate.hbm2ddl.auto" value="update"/>-->
+<!--        </properties>-->
+<!--    </persistence-unit>-->
 
-    <persistence-unit name="MYSQL" transaction-type="RESOURCE_LOCAL">
-        <provider>org.hibernate.ejb.HibernatePersistence</provider>
-
+    <persistence-unit name="MYSQL">
         <properties>
             <property name="hibernate.id.new_generator_mappings" value="false"/>
-            <property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver"/>
-            <property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306/up_db"/>
-            <property name="hibernate.connection.username" value="root"/>
-            <property name="hibernate.connection.password" value="root"/>
+            <property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
+            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://mysql:3306/up_db"/>
+            <property name="javax.persistence.jdbc.user" value="root"/>
+            <property name="javax.persistence.jdbc.password" value="root"/>
             <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect"/>
             <property name="hibernate.hbm2ddl.auto" value="update"/>
+            <property name="hibernate.show_sql" value="true"/>
+            <property name="hibernate.format_sql" value="true"/>
         </properties>
     </persistence-unit>
 </persistence>

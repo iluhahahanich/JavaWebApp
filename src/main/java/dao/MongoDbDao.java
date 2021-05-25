@@ -51,6 +51,7 @@ public class MongoDbDao<T extends Identifiable<String>> implements Dao<T, String
 
     @Override
     public void update(T obj) throws ReadWriteException {
+
         Map<String, Object> fields = getFields(obj);
 
         var query = ds.createQuery(clazz)

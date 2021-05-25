@@ -84,18 +84,18 @@ public class ServiceLayer<T extends Identifiable<String>> {
             case XML -> dao = new XmlDao<>(appDir + "data/in_" + clazz.getSimpleName() + ".xml", clazz);
             case JSON -> dao = new JsonDao<>(appDir + "data/in_" + clazz.getSimpleName() + ".json", clazz);
             case CSV -> dao = new CsvDao<>(appDir + "data/in_" + clazz.getSimpleName() + ".csv", clazz);
-            case POSTGRE -> dao = new PostgreSqlDao<>(clazz);
+            case MYSQL -> dao = new MySqlDao<>(clazz);
             case MONGO -> dao = new MongoDbDao<>(clazz);
         }
 
-        dao = getLogged(dao);
+         dao = getLogged(dao);
     }
 
     private Dao<T, String> getLogged(Dao<T, String> dao){
         return (Dao<T, String>) Proxy.newProxyInstance(
                 LoggingProxyHandler.class.getClassLoader(),
                 new Class[]{Dao.class},
-                new LoggingProxyHandler<>(dao, new File(appDir + "log.txt")));
+                new LoggingProxyHandler<>(dao, new File(appDir + "data/log.txt")));
     }
 
     public List<?> getSortedByAgeGroupAttendance(List<? extends SportEvent> events, AgeGroup group){
