@@ -5,17 +5,15 @@ services:
       context: .
     ports:
       - 8080:8080
-
     volumes:
 #      - ./src:/home/UPweb/src
       - ./src/main/webapp/data:/webapps/UPweb/data
-    links:
-     - mysql
+    depends_on:
+      - mysql
+      - mongodb
 
   mysql:
     image: mysql:latest
-    # container_name: mysql
-    restart: always
     environment:
       MYSQL_DATABASE: up_db
       MYSQL_ROOT_PASSWORD: root
@@ -23,3 +21,8 @@ services:
       - ./mysql/init:/docker-entrypoint-initdb.d
     ports:
        - 3306:3306
+
+  mongodb:
+    image: mongo:latest
+    ports:
+      - 27017:27017

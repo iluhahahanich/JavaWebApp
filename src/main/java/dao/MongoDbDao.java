@@ -2,6 +2,7 @@ package dao;
 
 import app.Identifiable;
 import com.mongodb.MongoClient;
+import com.mongodb.MongoClientURI;
 import dev.morphia.Datastore;
 import dev.morphia.Morphia;
 import exceptions.ReadWriteException;
@@ -12,8 +13,8 @@ import java.util.*;
 public class MongoDbDao<T extends Identifiable<String>> implements Dao<T, String> {
 
     private final Morphia morphia = new Morphia();
-    private final MongoClient db = new MongoClient();
-    private final Datastore ds = morphia.createDatastore(db, "testdb");
+    private final MongoClient db = new MongoClient(new MongoClientURI("mongodb://mongodb:27017"));
+    private final Datastore ds = morphia.createDatastore(db, "up_db");
 
     protected Class<T> clazz = null;
 
